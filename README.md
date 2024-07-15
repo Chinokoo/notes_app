@@ -2,6 +2,8 @@
 
 A Flutter project for creating and managing notes.
 
+<img src="lib/images/screenshots/Dark_Mode.png" width="200" height="400" alt="Dark Mode Screenshot">
+
 ## Description
 
 This Notes App is a simple yet powerful application built with Flutter. It allows users to create, read, update, and delete notes, providing a seamless note-taking experience across different platforms.
@@ -13,15 +15,23 @@ This Notes App is a simple yet powerful application built with Flutter. It allow
 - Update notes
 - Delete notes
 - Cross-platform support (Android, iOS, Web, Windows, macOS, Linux)
+- Local database management using Isar.
 
 ## Getting Started
 
 To get started with this project:
 
 1. Ensure you have Flutter installed on your machine.
-2. Clone this repository.
-3. Run `flutter pub get` to install dependencies.
-4. Use `flutter run` to start the application on your preferred device or emulator.
+2. Clone this repository
+   [here](https://github.com/Chinoko/notes_app)
+3. Open the project in your IDE
+4. Run this command to install dependencies.
+
+   flutter pub get
+
+5. Type this command to start the application on your preferred device or emulator.
+
+   flutter run
 
 ## Project Structure
 
