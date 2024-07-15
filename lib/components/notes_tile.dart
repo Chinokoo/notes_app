@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app/components/note_settings.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/models/note_database.dart';
+import 'package:popover/popover.dart';
 import 'package:provider/provider.dart';
 
 class NotesTile extends StatefulWidget {
@@ -19,6 +21,7 @@ class _NotesTileState extends State<NotesTile> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               shape: const ContinuousRectangleBorder(
                   borderRadius: BorderRadius.zero),
               title: const Text('Update Note'),
@@ -51,6 +54,7 @@ class _NotesTileState extends State<NotesTile> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               shape: const ContinuousRectangleBorder(
                   borderRadius: BorderRadius.zero),
               title: const Text('Delete Note'),
@@ -74,35 +78,46 @@ class _NotesTileState extends State<NotesTile> {
 
   @override
   Widget build(BuildContext context) {
+    //getting info from the provider database.
     final notesDatabase = context.watch<NoteDatabase>();
-    List<Note> currentNotes = notesDatabase.currentNotes;
-    return ListView.builder(
-      itemCount: currentNotes.length,
-      itemBuilder: (context, index) {
-        final note = currentNotes[index];
 
-        return ListTile(
-          title: Text(note.text),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    updateNote(note);
-                  },
-                  icon: const Icon(
-                    Icons.edit,
-                    color: Colors.blue,
-                  )),
-              IconButton(
-                  onPressed: () {
-                    deleteNote(note);
-                  },
-                  icon: const Icon(Icons.delete, color: Colors.red))
-            ],
-          ),
-        );
-      },
-    );
+    //*getting the current notes from the provider database.
+    List<Note> currentNotes = notesDatabase.currentNotes;
+
+    //creating a list view of the notes.
+    return ListView.builder(
+        itemCount: currentNotes.length,
+        itemBuilder: (context, index) {
+          final note = currentNotes[index];
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: ListTile(
+              tileColor: Theme.of(context).colorScheme.secondary,
+              title: Text(
+                note.text,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary),
+              ),
+              trailing: Builder(
+                builder: (context) {
+                  return IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    onPressed: () => showPopover(
+                      context: context,
+                      direction: PopoverDirection.bottom,
+                      width: 80,
+                      height: 80,
+                      bodyBuilder: (context) => NoteSettings(
+                        onTapEdit: () => updateNote(note),
+                        onTapDelete: () => deleteNote(note),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        });
   }
 }

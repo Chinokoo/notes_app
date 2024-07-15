@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:notes_app/components/drawer.dart';
 import 'package:notes_app/components/notes_tile.dart';
 import 'package:notes_app/models/note_database.dart';
 import 'package:provider/provider.dart';
@@ -34,13 +37,15 @@ class _NotesPageState extends State<NotesPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         shape: const ContinuousRectangleBorder(borderRadius: BorderRadius.zero),
         content: TextField(
           controller: textController,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Enter your note here',
-          ),
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Enter your note here',
+              hintStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.inversePrimary)),
         ),
         actions: [
           MaterialButton(
@@ -70,18 +75,34 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        //app bar or the header where the drawer button is placed
         appBar: AppBar(
-          title: const Center(
-              child: Text(
-            'Notes',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          )),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
+
+        //floating action button to create a note
         floatingActionButton: FloatingActionButton(
           onPressed: createNote,
-          backgroundColor: Colors.white,
-          child: const Icon(Icons.add),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: Icon(
+            Icons.note_add_sharp,
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
         ),
-        body: const NotesTile());
+        drawer: const MyDrawer(),
+        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: Text("Notes",
+                style: GoogleFonts.dmSerifText(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold)),
+          ),
+          const Expanded(child: NotesTile())
+        ]));
   }
 }
